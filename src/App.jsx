@@ -47,11 +47,18 @@ const App = () => {
   };
 
   const handleDelete = async (post) => {
-    const response = await fetch(`${API_ENDPOINT}/${post.id}`, {
-      method: 'DELETE',
-    });
-    const result = await response.json();
+    const originalState = posts;
     setPosts((prevState) => prevState.filter((p) => p.id !== post.id));
+
+    try {
+      const response = await fetch(`${API_ENDPOINT}/${post.id}`, {
+        method: 'DELETE',
+      });
+      await response.json();
+    } catch (ex) {
+      alert('Something failed while deleting');
+      setPosts(originalState);
+    }
   };
 
   return (
