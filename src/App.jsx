@@ -56,7 +56,13 @@ const App = () => {
       });
       await response.json();
     } catch (ex) {
-      alert('Something failed while deleting');
+      if (ex.response && ex.response.status === 404)
+        alert('This post had already been deleted');
+      else {
+        console.log('Logging error', ex);
+        alert('An unexpected error occurred.');
+      }
+
       setPosts(originalState);
     }
   };
