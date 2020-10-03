@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import config from './config.json';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   const [posts, setPosts] = useState([]);
@@ -55,10 +57,10 @@ const App = () => {
       await response.json();
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
-        alert('This post had already been deleted');
+        toast.error('This post had already been deleted');
       else {
         console.log('Logging error', ex);
-        alert('An unexpected error occurred.');
+        toast.error('An unexpected error occurred.');
       }
 
       setPosts(originalState);
@@ -67,6 +69,7 @@ const App = () => {
 
   return (
     <div>
+      <ToastContainer />
       <button onClick={handleAdd}>Add</button>
       <table>
         <thead>
