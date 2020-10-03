@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import config from './config.json';
 
 const App = () => {
   const [posts, setPosts] = useState([]);
 
-  const API_ENDPOINT = 'https://jsonplaceholder.typicode.com/posts';
-
   useEffect(() => {
     const fetchData = async () => {
-      const promise = await fetch(API_ENDPOINT);
+      const promise = await fetch(config.API_ENDPOINT);
       const result = await promise.json();
-      console.log(result);
       setPosts(result);
     };
     fetchData();
@@ -17,7 +15,7 @@ const App = () => {
 
   const handleAdd = async () => {
     const obj = { title: 'a', body: 'b' };
-    const response = await fetch(API_ENDPOINT, {
+    const response = await fetch(config.API_ENDPOINT, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
@@ -30,7 +28,7 @@ const App = () => {
 
   const handleUpdate = async (post) => {
     post.title = 'Update';
-    const response = await fetch(`${API_ENDPOINT}/${post.id}`, {
+    const response = await fetch(`${config.API_ENDPOINT}/${post.id}`, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
@@ -51,7 +49,7 @@ const App = () => {
     setPosts((prevState) => prevState.filter((p) => p.id !== post.id));
 
     try {
-      const response = await fetch(`${API_ENDPOINT}/${post.id}`, {
+      const response = await fetch(`${config.API_ENDPOINT}/${post.id}`, {
         method: 'DELETE',
       });
       await response.json();
